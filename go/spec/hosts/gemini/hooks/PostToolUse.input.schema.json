@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "gemini PostToolUse input",
+  "type": "object",
+  "required": ["hook_event_name", "session_id", "cwd", "tool_name", "tool_input", "tool_response"],
+  "additionalProperties": false,
+  "properties": {
+    "hook_event_name": { "const": "AfterTool" },
+    "session_id": { "type": "string" },
+    "cwd": { "type": "string" },
+    "transcript_path": { "type": "string" },
+    "tool_name": { "type": "string" },
+    "tool_input": { "type": "object" },
+    "tool_response": { "type": "object" }
+  }
+}

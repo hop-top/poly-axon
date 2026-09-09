@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "codex PreToolUse rewrite",
+  "type": "object",
+  "required": ["hookSpecificOutput"],
+  "additionalProperties": false,
+  "properties": {
+    "hookSpecificOutput": {
+      "type": "object",
+      "required": ["hookEventName", "permissionDecision", "updatedInput"],
+      "additionalProperties": false,
+      "properties": {
+        "hookEventName":      { "type": "string", "enum": ["PreToolUse"] },
+        "permissionDecision": { "type": "string", "enum": ["allow"] },
+        "updatedInput":       { "type": "object" }
+      }
+    }
+  }
+}

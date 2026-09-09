@@ -1,0 +1,32 @@
+name: CI (TypeScript)
+
+on:
+  push:
+    branches: [main]
+    # ts/ tests exercise the bundled spec/ tree (bundle-spec.mjs copies
+    # it in), so a spec/ change can break them even with no ts/ diff.
+    paths: ["ts/**", "spec/**", "mise.toml", "Makefile", ".github/workflows/ci-ts.yml"]
+  pull_request:
+    branches: [main]
+    paths: ["ts/**", "spec/**", "mise.toml", "Makefile", ".github/workflows/ci-ts.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # >>> kit-managed: toolchain >>>
+      - uses: jdx/mise-action@v2
+        with:
+          install: true
+          cache: true
+      - run: mise run install
+      # <<< kit-managed: toolchain <<<
+
+      - name: Run ts tests
+        run: make test-ts

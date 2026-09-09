@@ -1,0 +1,6 @@
+# spec/hosts/antigravity/host.yaml
+name: antigravity
+status: active
+binaries: [agy]
+store_roots:
+  data: ~/Library/Application Support/Antigravity/

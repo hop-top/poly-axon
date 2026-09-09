@@ -1,0 +1,596 @@
+[
+  {
+    "args": {
+      "event": "CwdChanged",
+      "host": "codex"
+    },
+    "call": "capability_level",
+    "id": "capability_level/codex/CwdChanged"
+  },
+  {
+    "args": {
+      "event": "PreToolUse",
+      "host": "codex"
+    },
+    "call": "capability_level",
+    "id": "capability_level/codex/PreToolUse"
+  },
+  {
+    "args": {
+      "event": "SessionStart",
+      "host": "codex"
+    },
+    "call": "capability_level",
+    "id": "capability_level/codex/SessionStart"
+  },
+  {
+    "args": {
+      "event": "TeammateIdle",
+      "host": "codex"
+    },
+    "call": "capability_level",
+    "id": "capability_level/codex/TeammateIdle"
+  },
+  {
+    "args": {
+      "event": "PermissionRequest",
+      "host": "gemini"
+    },
+    "call": "capability_level",
+    "id": "capability_level/gemini/PermissionRequest"
+  },
+  {
+    "args": {
+      "event": "SessionStart",
+      "host": "gemini"
+    },
+    "call": "capability_level",
+    "id": "capability_level/gemini/SessionStart"
+  },
+  {
+    "args": {
+      "event": "StopFailure",
+      "host": "gemini"
+    },
+    "call": "capability_level",
+    "id": "capability_level/gemini/StopFailure"
+  },
+  {
+    "args": {
+      "event": "UserPromptSubmit",
+      "host": "gemini"
+    },
+    "call": "capability_level",
+    "id": "capability_level/gemini/UserPromptSubmit"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "PermissionRequest.allow.json",
+      "host": "claude"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/claude/PermissionRequest.allow"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PermissionRequest.block.json",
+      "host": "claude"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/claude/PermissionRequest.block"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PostToolUse.block.json",
+      "host": "claude"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/claude/PostToolUse.block"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "PreToolUse.allow.json",
+      "host": "claude"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/claude/PreToolUse.allow"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "claude"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/claude/PreToolUse.block"
+  },
+  {
+    "args": {
+      "exit": 3,
+      "fixture": "PreToolUse.rewrite.json",
+      "host": "claude"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/claude/PreToolUse.rewrite"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "SessionStart.allow.json",
+      "host": "claude"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/claude/SessionStart.allow"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "claude",
+      "raw": "{}"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/claude/fallback-empty-object"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "claude",
+      "raw": ""
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/claude/fallback-empty-stdout"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "claude",
+      "raw": "{\"foo\":\"bar\"}"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/claude/fallback-unrecognized-json"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PostToolUse.block.json",
+      "host": "codex"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/codex/PostToolUse.block"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "PreToolUse.allow.json",
+      "host": "codex"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/codex/PreToolUse.allow"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "codex"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/codex/PreToolUse.block"
+  },
+  {
+    "args": {
+      "exit": 3,
+      "fixture": "PreToolUse.rewrite.json",
+      "host": "codex"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/codex/PreToolUse.rewrite"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "SessionStart.allow.json",
+      "host": "codex"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/codex/SessionStart.allow"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "codex",
+      "raw": "{}"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/codex/fallback-empty-object"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "codex",
+      "raw": ""
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/codex/fallback-empty-stdout"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "codex",
+      "raw": "{\"foo\":\"bar\"}"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/codex/fallback-unrecognized-json"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "PreToolUse.allow.json",
+      "host": "gemini"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/gemini/PreToolUse.allow"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "gemini"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/gemini/PreToolUse.block"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "PreToolUse.warn.json",
+      "host": "gemini"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/gemini/PreToolUse.warn"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "SessionStart.allow.json",
+      "host": "gemini"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/gemini/SessionStart.allow"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "gemini",
+      "raw": "{}"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/gemini/fallback-empty-object"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "gemini",
+      "raw": ""
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/gemini/fallback-empty-stdout"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "gemini",
+      "raw": "{\"foo\":\"bar\"}"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/gemini/fallback-unrecognized-json"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "PreToolUse.allow.json",
+      "host": "opencode"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/opencode/PreToolUse.allow"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "PreToolUse.block.json",
+      "host": "opencode"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/opencode/PreToolUse.block"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "PreToolUse.rewrite.json",
+      "host": "opencode"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/opencode/PreToolUse.rewrite"
+  },
+  {
+    "args": {
+      "exit": 0,
+      "fixture": "PreToolUse.warn.json",
+      "host": "opencode"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/opencode/PreToolUse.warn"
+  },
+  {
+    "args": {
+      "exit": 2,
+      "fixture": "PreToolUse.block.json",
+      "host": "not-a-real-host"
+    },
+    "call": "decode_decision",
+    "id": "decode_decision/unknown-host"
+  },
+  {
+    "args": {
+      "fixture": "PermissionRequest.input.json",
+      "host": "claude"
+    },
+    "call": "encode_input",
+    "id": "encode_input/claude/PermissionRequest"
+  },
+  {
+    "args": {
+      "fixture": "PostToolUse.input.json",
+      "host": "claude"
+    },
+    "call": "encode_input",
+    "id": "encode_input/claude/PostToolUse"
+  },
+  {
+    "args": {
+      "fixture": "PreToolUse.input.json",
+      "host": "claude"
+    },
+    "call": "encode_input",
+    "id": "encode_input/claude/PreToolUse"
+  },
+  {
+    "args": {
+      "fixture": "SessionStart.input.json",
+      "host": "claude"
+    },
+    "call": "encode_input",
+    "id": "encode_input/claude/SessionStart"
+  },
+  {
+    "args": {
+      "fixture": "Stop.input.json",
+      "host": "claude"
+    },
+    "call": "encode_input",
+    "id": "encode_input/claude/Stop"
+  },
+  {
+    "args": {
+      "fixture": "UserPromptSubmit.input.json",
+      "host": "claude"
+    },
+    "call": "encode_input",
+    "id": "encode_input/claude/UserPromptSubmit"
+  },
+  {
+    "args": {
+      "fixture": "PostToolUse.input.json",
+      "host": "codex"
+    },
+    "call": "encode_input",
+    "id": "encode_input/codex/PostToolUse"
+  },
+  {
+    "args": {
+      "fixture": "PreToolUse.input.json",
+      "host": "codex"
+    },
+    "call": "encode_input",
+    "id": "encode_input/codex/PreToolUse"
+  },
+  {
+    "args": {
+      "fixture": "SessionStart.input.json",
+      "host": "codex"
+    },
+    "call": "encode_input",
+    "id": "encode_input/codex/SessionStart"
+  },
+  {
+    "args": {
+      "fixture": "Stop.input.json",
+      "host": "codex"
+    },
+    "call": "encode_input",
+    "id": "encode_input/codex/Stop"
+  },
+  {
+    "args": {
+      "fixture": "UserPromptSubmit.input.json",
+      "host": "codex"
+    },
+    "call": "encode_input",
+    "id": "encode_input/codex/UserPromptSubmit"
+  },
+  {
+    "args": {
+      "fixture": "TeammateIdle.input.json",
+      "host": "codex"
+    },
+    "call": "encode_input",
+    "id": "encode_input/codex/unsupported-event"
+  },
+  {
+    "args": {
+      "fixture": "PostToolUse.input.json",
+      "host": "gemini"
+    },
+    "call": "encode_input",
+    "id": "encode_input/gemini/PostToolUse"
+  },
+  {
+    "args": {
+      "fixture": "PreToolUse.input.json",
+      "host": "gemini"
+    },
+    "call": "encode_input",
+    "id": "encode_input/gemini/PreToolUse"
+  },
+  {
+    "args": {
+      "fixture": "SessionEnd.input.json",
+      "host": "gemini"
+    },
+    "call": "encode_input",
+    "id": "encode_input/gemini/SessionEnd"
+  },
+  {
+    "args": {
+      "fixture": "SessionStart.input.json",
+      "host": "gemini"
+    },
+    "call": "encode_input",
+    "id": "encode_input/gemini/SessionStart"
+  },
+  {
+    "args": {
+      "fixture": "FileChanged.input.json",
+      "host": "opencode"
+    },
+    "call": "encode_input",
+    "id": "encode_input/opencode/FileChanged"
+  },
+  {
+    "args": {
+      "fixture": "PermissionRequest.input.json",
+      "host": "opencode"
+    },
+    "call": "encode_input",
+    "id": "encode_input/opencode/PermissionRequest"
+  },
+  {
+    "args": {
+      "fixture": "PostToolUse.input.json",
+      "host": "opencode"
+    },
+    "call": "encode_input",
+    "id": "encode_input/opencode/PostToolUse"
+  },
+  {
+    "args": {
+      "fixture": "PreToolUse.input.json",
+      "host": "opencode"
+    },
+    "call": "encode_input",
+    "id": "encode_input/opencode/PreToolUse"
+  },
+  {
+    "args": {
+      "fixture": "SessionStart.input.json",
+      "host": "opencode"
+    },
+    "call": "encode_input",
+    "id": "encode_input/opencode/SessionStart"
+  },
+  {
+    "args": {
+      "fixture": "TaskCompleted.input.json",
+      "host": "opencode"
+    },
+    "call": "encode_input",
+    "id": "encode_input/opencode/TaskCompleted"
+  },
+  {
+    "args": {
+      "fixture": "UserPromptSubmit.input.json",
+      "host": "opencode"
+    },
+    "call": "encode_input",
+    "id": "encode_input/opencode/UserPromptSubmit"
+  },
+  {
+    "args": {},
+    "call": "hooked_hosts",
+    "id": "hooked_hosts/all"
+  },
+  {
+    "args": {
+      "event": "PreToolUse",
+      "host": "claude"
+    },
+    "call": "host_event",
+    "id": "host_event/claude/PreToolUse"
+  },
+  {
+    "args": {
+      "event": "TaskCompleted",
+      "host": "opencode"
+    },
+    "call": "host_event",
+    "id": "host_event/opencode/TaskCompleted"
+  },
+  {
+    "args": {
+      "event": "TeammateIdle",
+      "host": "opencode"
+    },
+    "call": "host_event",
+    "id": "host_event/opencode/TeammateIdle"
+  },
+  {
+    "args": {},
+    "call": "hosts",
+    "id": "hosts/all"
+  },
+  {
+    "args": {},
+    "call": "native_events",
+    "id": "native_events/all"
+  },
+  {
+    "args": {
+      "name": "claude-code"
+    },
+    "call": "resolve",
+    "id": "resolve/alias-claude-code"
+  },
+  {
+    "args": {
+      "name": "codex-cli"
+    },
+    "call": "resolve",
+    "id": "resolve/alias-codex-cli"
+  },
+  {
+    "args": {
+      "name": "gemini-cli"
+    },
+    "call": "resolve",
+    "id": "resolve/alias-gemini-cli"
+  },
+  {
+    "args": {
+      "name": "not-a-real-host"
+    },
+    "call": "resolve",
+    "id": "resolve/unknown"
+  }
+]

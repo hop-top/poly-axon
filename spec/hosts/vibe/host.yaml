@@ -1,0 +1,10 @@
+# spec/hosts/vibe/host.yaml
+name: vibe
+status: active
+binaries: [vibe]
+store_roots:
+  data: ~/.vibe/logs/session/
+hook_config_paths: ["~/.vibe/config.toml", ".vibe/config.toml"]
+exit_codes: { allow: 0, block: 2 }
+envelope_discriminator: event
+hooks: true

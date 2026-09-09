@@ -1,0 +1,4 @@
+{
+  "action": "rewrite",
+  "rewrite": { "command": "echo safe" }
+}

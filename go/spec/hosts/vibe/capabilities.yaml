@@ -1,0 +1,51 @@
+# technique/cost omitted: nerv's adapter file carries neither for this host.
+# Vibe CLI (Mistral) adapter capabilities.
+# BeforeToolSelection dropped from unsupported: it is an extension event,
+# not one of the 26 canonical events.
+host: vibe
+
+native:
+  - { host_event: UserMessageEvent, event: UserPromptSubmit }
+  - { host_event: ToolCallEvent, event: PreToolUse }
+  - { host_event: ToolResultEvent, event: PostToolUse }
+  - { host_event: CompactStartEvent, event: PreCompact }
+  - { host_event: CompactEndEvent, event: PostCompact }
+  - { host_event: AgentProfileChangedEvent, event: ConfigChange }
+
+close:
+  - { host_event: AssistantEvent, event: Stop, note: "maps when response ends" }
+  - { host_event: WaitingForInputEvent, event: Elicitation, note: "maps to user input request" }
+
+synthesized:
+  PermissionRequest:
+    source: ApprovalCallback
+    pattern: "middleware approval callback"
+  PermissionDenied:
+    source: ApprovalCallback
+    pattern: "approval rejected"
+  ElicitationResult:
+    source: UserInputCallback
+    pattern: "user responds to input request"
+  SubagentStart:
+    source: SwitchAgentCallback
+    pattern: "agent switch callback"
+  SessionStart:
+    source: middleware
+    pattern: "before_turn() on first turn"
+  SessionEnd:
+    source: middleware
+    pattern: "reset() or session teardown"
+
+unsupported:
+  - SubagentStop
+  - TaskCreated
+  - TaskCompleted
+  - StopFailure
+  - TeammateIdle
+  - Notification
+  - InstructionsLoaded
+  - CwdChanged
+  - FileChanged
+  - WorktreeCreate
+  - WorktreeRemove
+  - PostToolUseFailure

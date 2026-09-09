@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "axon event taxonomy",
+  "type": "object",
+  "required": ["events"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "events": { "type": "array", "items": { "$ref": "#/definitions/event" } }
+  },
+  "definitions": {
+    "event": {
+      "type": "object",
+      "required": ["name", "category", "description", "direction", "blocking"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "direction": { "type": "string", "enum": ["inbound", "outbound"] },
+        "blocking": { "type": "boolean" },
+        "payload": { "type": "array", "items": { "$ref": "#/definitions/payload_field" } },
+        "origin": { "type": "string", "enum": ["native", "extension", "derived"] },
+        "extension_source": { "type": "string" },
+        "derivation": { "$ref": "#/definitions/derivation" }
+      }
+    },
+    "payload_field": {
+      "type": "object", "required": ["field", "type"], "additionalProperties": false,
+      "properties": {
+        "field": { "type": "string" },
+        "type": { "type": "string" },
+        "notes": { "type": "string" },
+        "example": { "type": "string" },
+        "required": { "type": "boolean" },
+        "format": { "type": "string" },
+        "description": { "type": "string" },
+        "enum": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "derivation": {
+      "type": "object", "required": ["from", "when"], "additionalProperties": false,
+      "properties": { "from": { "type": "string" }, "when": { "type": "object" } }
+    }
+  }
+}

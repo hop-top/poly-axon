@@ -1,0 +1,7 @@
+{
+  "hookSpecificOutput": {
+    "additionalContext": "loaded project context"
+  },
+  "systemMessage": "session ready",
+  "continue": true
+}

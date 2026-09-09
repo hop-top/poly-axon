@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "opencode PostToolUse input",
+  "type": "object",
+  "required": ["type", "session_id", "tool", "input", "output"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "tool.execute.after" },
+    "session_id": { "type": "string" },
+    "tool": { "type": "string" },
+    "input": { "type": "object" },
+    "output": { "type": "object" }
+  }
+}

@@ -1,0 +1,69 @@
+# technique/cost omitted: nerv's adapter file carries neither for this host.
+# OpenHands adapter capabilities.
+# PermissionRequest and BeforeToolSelection dropped from source: neither
+# appears in nerv's capabilities.yaml. PermissionRequest is genuinely
+# uncovered (matrix cell `-`); BeforeToolSelection is an extension event,
+# not one of the 26 canonical events.
+host: openhands
+
+native:
+  - { host_event: PreToolUse, event: PreToolUse }
+  - { host_event: PostToolUse, event: PostToolUse }
+  - { host_event: UserPromptSubmit, event: UserPromptSubmit }
+  - { host_event: SessionStart, event: SessionStart }
+  - { host_event: SessionEnd, event: SessionEnd }
+
+close:
+  - { host_event: Stop, event: Stop, note: "API-ready, needs core loop change" }
+
+synthesized:
+  SubagentStart:
+    source: AgentDelegateAction
+    pattern: "internal event stream"
+  SubagentStop:
+    source: AgentDelegateObservation
+    pattern: "internal event stream"
+  TaskCreated:
+    source: TaskTrackingAction
+    pattern: "internal event stream"
+  TaskCompleted:
+    source: TaskTrackingObservation
+    pattern: "internal event stream"
+  FileChanged:
+    source: "FileWrite/EditObservation"
+    pattern: "internal event stream"
+  CwdChanged:
+    source: CmdRunAction
+    pattern: "command matches ^cd\\b"
+  PreCompact:
+    source: CondensationAction
+    pattern: "internal event stream"
+  PostCompact:
+    source: CondensationObservation
+    pattern: "internal event stream"
+  Elicitation:
+    source: MCPAction
+    pattern: "internal event stream"
+  ElicitationResult:
+    source: MCPObservation
+    pattern: "internal event stream"
+  PostToolUseFailure:
+    source: ErrorObservation
+    pattern: "internal event stream"
+  InstructionsLoaded:
+    source: RecallObservation
+    pattern: "internal event stream"
+  PermissionDenied:
+    source: UserRejectObservation
+    pattern: "internal event stream"
+  StopFailure:
+    source: ErrorObservation
+    pattern: "error during stop"
+
+unsupported:
+  - TeammateIdle
+  - Notification
+  - ConfigChange
+  - WorktreeCreate
+  - WorktreeRemove
+  - PermissionRequest

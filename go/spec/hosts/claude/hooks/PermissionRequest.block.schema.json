@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "claude PermissionRequest block (native deny behavior)",
+  "type": "object",
+  "required": ["hookSpecificOutput"],
+  "additionalProperties": false,
+  "properties": {
+    "hookSpecificOutput": {
+      "type": "object",
+      "required": ["hookEventName", "decision"],
+      "additionalProperties": false,
+      "properties": {
+        "hookEventName": { "type": "string", "enum": ["PermissionRequest"] },
+        "decision": {
+          "type": "object",
+          "required": ["behavior", "message"],
+          "additionalProperties": false,
+          "properties": {
+            "behavior": { "type": "string", "enum": ["deny"] },
+            "message":  { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

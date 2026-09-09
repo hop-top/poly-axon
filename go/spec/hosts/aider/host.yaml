@@ -1,0 +1,8 @@
+# spec/hosts/aider/host.yaml
+name: aider
+status: active
+binaries: [aider]
+hook_config_paths: ["~/.aider.conf.yml", ".aider.conf.yml"]
+exit_codes: { allow: 0, block: 1 }
+envelope_discriminator: hook_event_name
+hooks: true

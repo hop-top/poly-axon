@@ -1,0 +1,32 @@
+# Managed by `kit init` — tools below the kit-managed marker are tracked
+# against the kit tool-versions manifest. Add your own tools above the
+# marker. Run `kit init --update` to refresh managed tools.
+
+# >>> kit-managed >>>
+# golangci-lint pinned to a Go 1.26 build; kit default (1.62) is built with go1.23.
+[tools]
+go = "1.26"
+golangci-lint = "2.13.2"
+# tools/parity requires 3.11+ (system python3 here is 3.9.6).
+python = "3.11"
+lychee = "0.18"
+hadolint = "2.12"
+actionlint = "1.7"
+shellcheck = "0.10"
+shfmt = "3.10"
+"npm:release-please" = "16"
+# TypeScript binding (ts/) toolchain.
+node = "26.8.1"
+pnpm = "11.24.0"
+
+[env]
+_.file = ".env"
+
+[tasks.install]
+description = "Install ecosystem dependencies (orchestrated by mise)"
+# The Go module lives in go/; `go -C go` avoids a cwd change so the task
+# stays runnable from the repo root (where CI invokes `mise run install`).
+run = [
+  "go -C go mod download"
+]
+# <<< kit-managed <<<

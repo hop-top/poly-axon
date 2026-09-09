@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "opencode PermissionRequest input",
+  "type": "object",
+  "required": ["type", "session_id", "tool", "input"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "permission.asked" },
+    "session_id": { "type": "string" },
+    "tool": { "type": "string" },
+    "input": { "type": "object" }
+  }
+}

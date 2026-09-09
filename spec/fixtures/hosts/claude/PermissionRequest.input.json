@@ -1,0 +1,9 @@
+{
+  "hook_event_name": "PermissionRequest",
+  "session_id": "00000000-0000-4000-8000-000000000000",
+  "cwd": "/tmp/axon",
+  "transcript_path": "/tmp/axon/transcript.jsonl",
+  "tool_name": "Bash",
+  "tool_input": { "command": "ls" },
+  "permission_suggestions": []
+}

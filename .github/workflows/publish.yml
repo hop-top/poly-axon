@@ -1,0 +1,99 @@
+name: publish
+on:
+  push:
+    tags: ['*/v*']
+jobs:
+  publish:
+    permissions:
+      contents: read
+      id-token: write  # required by publish-py (PyPI OIDC trusted publishing)
+    uses: hop-top/.github/.github/workflows/publish-on-tag.yml@v0
+    secrets:
+      GH_MIRROR_PAT: ${{ secrets.GH_MIRROR_PAT }}
+      RELEASE_BOT_APP_ID: ${{ secrets.RELEASE_BOT_APP_ID }}
+      RELEASE_BOT_PRIVATE_KEY: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+      NPM_REGISTRY_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}
+      PYPI_REGISTRY_TOKEN: ${{ secrets.PYPI_REGISTRY_TOKEN }}
+    with:
+      homepage: https://github.com/hop-top/poly-axon
+      description-prefix: "READ-ONLY MIRROR"
+      ecosystems: |
+        axon:
+          # dir is go/, not the repo root, and that is the whole point of
+          # the layout: mirror-subtree.yml special-cases source-prefix
+          # "." because `git subtree split` refuses the repo root
+          # ("fatal: . does not exist"), so it synthesizes a commit whose
+          # tree is HEAD's minus .github/workflows/ and nothing else --
+          # shipping ts/, py/, the parity orchestrator, mise.toml and the
+          # polyglot README to hop-top/axon. With dir: go it takes the
+          # normal `git subtree split --prefix=go` path and the mirror
+          # receives only the Go tree. That root-component branch no
+          # longer applies to this repo; do not set this back to ".".
+          dir: go
+          ecosystem: go
+          mirror: hop-top/axon
+        axon-ts:
+          dir: ts
+          ecosystem: ts
+          package: "@hop-top/axon"
+          mirror: hop-top/axon-ts
+          # Default test-command/build-command are fine here: publish-ts's
+          # Test step already runs `pnpm install --frozen-lockfile
+          # --ignore-scripts && pnpm test` in this same job/working-dir,
+          # populating node_modules; the default build-command (`pnpm
+          # build`) reuses it and runs ts/package.json's build script
+          # (gen-events.mjs -> bundle-spec.mjs -> tsc) with no re-install.
+          # publish-ts.yml@v0 already runs commands via `bash -c "$CMD"`,
+          # so `&&` is safe here — no single-argv-token workaround needed.
+        axon-py:
+          dir: py
+          ecosystem: py
+          package: hop-top-axon
+          mirror: hop-top/axon-py
+          # publish-py.yml's bootstrap installs only pip/pytest/build, not
+          # this package or its deps (jsonschema, PyYAML) -- install it
+          # editable first or every test file fails collection with
+          # ModuleNotFoundError. publish-py.yml@v0 runs via bash -c, so
+          # `&&` is safe here (hop-top/.github's old $CMD-strips-shell-
+          # operators bug is fixed at this pin).
+          test-command: pip install -e . && pytest
+          # Default build-command (`python -m build`) builds an sdist,
+          # then builds the wheel FROM THE EXTRACTED SDIST in a fresh temp
+          # dir -- and the sdist never contains ../spec (it lives outside
+          # py/, at the repo root, so standard sdist packaging drops it).
+          # hatchling's force-include then fails: "Forced include not
+          # found: .../spec". Build the wheel directly from the working
+          # tree instead, where ../spec is still reachable. Do NOT
+          # "simplify" this back to the default -- the sdist round-trip
+          # cannot work while spec/ lives outside py/.
+          build-command: python -m build --wheel
+          # OIDC (default) needs a pending trusted publisher on PyPI plus
+          # the `pypi` GitHub Environment on this repo, both set up before
+          # the first tag. Falls back to PYPI_REGISTRY_TOKEN only if OIDC
+          # doesn't bind cleanly (see task-7-report.md for the options).
+        spec:
+          dir: spec
+          # `none` = a payload with no registry: the language-neutral
+          # contract tree, published for readers who want the spec without
+          # a binding. Every publish-* job in publish-on-tag.yml@v0 gates
+          # on an exact `== '<eco>'` match (ts/py/rs), so `none` matches
+          # none of them and all four skip; the mirror job's guard is
+          # `ecosystem != ''`, which `none` satisfies, so the mirror still
+          # runs. Do NOT "simplify" this by omitting `ecosystem`: an
+          # absent field makes the parse step emit an EMPTY ecosystem
+          # output, which the mirror job reads as an umbrella/meta tag and
+          # green-skips -- the mirror would publish nothing, silently.
+          ecosystem: none
+          mirror: hop-top/spec-axon
+          # Graft the split tree under specs/v<MAJOR>.<MINOR>/ on the
+          # mirror instead of at its root, matching hop-top/spec-crtx and
+          # hop-top/spec-12fc. Without this, events.yaml and hosts/ would
+          # land at the mirror's top level.
+          #
+          # v0.1 is an owner decision, deliberately DECOUPLED from
+          # spec/version.yaml (currently 0.3.0). The published directory
+          # names the contract generation, not the tree's own version, and
+          # it must NOT move when version.yaml bumps -- a future frozen
+          # contract lands as a sibling specs/v1.0/. Do not "fix" the
+          # apparent mismatch.
+          target-prefix: specs/v0.1

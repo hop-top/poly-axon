@@ -1,0 +1,204 @@
+host: claude
+mappings:
+  - native:
+      - -p
+    support: native
+    universal: ModeRun
+  - native:
+      - (default)
+    support: native
+    universal: ModeInteractive
+  - native:
+      - --resume <id>
+    support: native
+    universal: ModeResume
+  - native:
+      - --continue
+      - -c
+    support: native
+    universal: Continue
+  - native:
+      - --fork-session
+    support: native
+    universal: Fork
+  - native:
+      - CommandSpec.Dir
+    notes: claude has no --cd flag; CWD applied via process working directory
+    support: native
+    universal: CWD
+  - native:
+      - --model
+    support: native
+    universal: Model
+  - native:
+      - --agent
+    support: native
+    universal: Agent
+  - native:
+      - (default)
+    support: native
+    universal: OutputText
+  - native:
+      - --output-format json
+    notes: single result; requires --print
+    support: native
+    universal: OutputJSON
+  - native:
+      - --output-format stream-json
+    notes: realtime streaming; requires --print
+    support: native
+    universal: OutputStreamJSON
+  - native:
+      - --permission-mode plan
+    notes: claude has no first-class sandbox tier; plan mode is read-only by convention
+    support: shim
+    universal: SandboxReadOnly
+  - native:
+      - (default)
+    notes: claude default behavior is workspace-write via tool policy
+    support: shim
+    universal: SandboxWorkspaceWrite
+  - native:
+      - --dangerously-skip-permissions
+    notes: requires Config["uxp.allow_dangerous"]="true"
+    support: dangerous
+    universal: SandboxDangerFullAccess
+  - native:
+      - --permission-mode plan
+    support: native
+    universal: ApprovalPlan
+  - native:
+      - --permission-mode acceptEdits
+    support: native
+    universal: ApprovalAutoEdit
+  - native:
+      - --permission-mode bypassPermissions
+    notes: requires Config["uxp.allow_dangerous"]="true"
+    support: dangerous
+    universal: ApprovalAutoAll
+  - native:
+      - (default)
+    support: native
+    universal: ApprovalAsk
+  - native:
+      - --permission-mode dontAsk
+    notes: closest peer to ApprovalNever; behavior is no-prompt
+    support: shim
+    universal: ApprovalNever
+  - native:
+      - --add-dir <directories...>
+    notes: variadic; multiple paths after one flag
+    support: native
+    universal: AddDirs
+  - native:
+      - S-1+S-3 (parent-dir reduce → --add-dir + prompt-block)
+    notes: claude --file is file_id:path for downloaded resources, not local files
+    support: shim
+    universal: Files
+  - native:
+      - S-3 (prompt-block)
+    notes: no headless image flag; TUI-only via stdin/clipboard
+    support: shim
+    universal: Images
+tools:
+  - controllable: true
+    native_names:
+      - Bash
+    permission: exec
+    support: native
+    transcript: native
+    universal: shell.exec
+  - controllable: true
+    native_names:
+      - Read
+    permission: read
+    support: native
+    transcript: native
+    universal: file.read
+  - controllable: true
+    native_names:
+      - Write
+    permission: write
+    support: native
+    transcript: native
+    universal: file.write
+  - controllable: true
+    native_names:
+      - Edit
+      - MultiEdit
+    permission: write
+    support: native
+    transcript: native
+    universal: file.edit
+  - controllable: true
+    native_names:
+      - Glob
+      - Grep
+    permission: read
+    support: native
+    transcript: native
+    universal: file.search
+  - controllable: true
+    native_names:
+      - WebSearch
+    permission: network
+    support: native
+    transcript: native
+    universal: web.search
+  - controllable: true
+    native_names:
+      - WebFetch
+    permission: network
+    support: native
+    transcript: native
+    universal: web.fetch
+  - controllable: true
+    native_names:
+      - TodoWrite
+    permission: task
+    support: native
+    transcript: native
+    universal: todo.write
+  - controllable: true
+    native_names:
+      - Task
+    permission: task
+    support: native
+    transcript: native
+    universal: task.spawn
+  - controllable: false
+    notes: claude uses --permission-mode plan for plan-mode runs; no in-conversation plan-update tool
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: plan.update
+  - controllable: true
+    native_names:
+      - MCP
+    notes: MCP servers configured via --mcp-config and --strict-mcp-config
+    permission: exec
+    support: native
+    transcript: native
+    universal: mcp.call
+  - controllable: false
+    notes: TUI-only via stdin/clipboard; no headless image attach flag
+    permission: read
+    support: shim
+    transcript: partial
+    universal: image.read
+  - controllable: true
+    native_names:
+      - Claude in Chrome
+    notes: Chrome integration via --chrome / --no-chrome flags; not a transcript-resident tool
+    permission: browser
+    support: shim
+    transcript: partial
+    universal: browser.operate
+  - controllable: true
+    native_names:
+      - SendUserMessage
+    notes: enabled via --brief flag
+    permission: task
+    support: native
+    transcript: native
+    universal: user.message

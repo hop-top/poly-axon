@@ -1,0 +1,7 @@
+{
+  "hook_event_name": "UserPromptSubmit",
+  "session_id": "00000000-0000-4000-8000-000000000000",
+  "cwd": "/tmp/axon",
+  "transcript_path": "/tmp/axon/transcript.jsonl",
+  "prompt": "test prompt"
+}

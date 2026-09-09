@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "claude PostToolUse block",
+  "type": "object",
+  "required": ["decision", "reason"],
+  "additionalProperties": false,
+  "properties": {
+    "decision": { "type": "string", "enum": ["block"] },
+    "reason":   { "type": "string" }
+  }
+}

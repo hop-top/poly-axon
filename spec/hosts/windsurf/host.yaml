@@ -1,0 +1,6 @@
+# spec/hosts/windsurf/host.yaml
+name: windsurf
+status: active
+binaries: [windsurf]
+store_roots:
+  data: ~/.windsurf/

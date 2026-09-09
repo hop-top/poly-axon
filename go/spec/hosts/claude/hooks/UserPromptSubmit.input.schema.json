@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "claude UserPromptSubmit input",
+  "type": "object",
+  "required": ["hook_event_name", "session_id", "cwd", "prompt"],
+  "additionalProperties": false,
+  "properties": {
+    "hook_event_name": { "const": "UserPromptSubmit" },
+    "session_id": { "type": "string" },
+    "cwd": { "type": "string" },
+    "transcript_path": { "type": "string" },
+    "prompt": { "type": "string" }
+  }
+}

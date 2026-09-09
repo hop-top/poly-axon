@@ -1,0 +1,10 @@
+{
+  "hook_event_name": "PreToolUse",
+  "session_id": "00000000-0000-4000-8000-000000000000",
+  "cwd": "/tmp/axon",
+  "transcript_path": "/tmp/axon/transcript.jsonl",
+  "model": "gpt-5-codex",
+  "turn_id": "t1",
+  "tool_name": "shell",
+  "tool_input": { "command": "echo hello" }
+}

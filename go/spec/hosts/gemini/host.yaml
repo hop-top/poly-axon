@@ -1,0 +1,11 @@
+# spec/hosts/gemini/host.yaml
+name: gemini
+aliases: [gemini-cli]
+status: active
+binaries: [gemini]
+store_roots:
+  data: ~/.gemini/history/
+hook_config_paths: ["~/.gemini/settings.json", ".gemini/settings.json"]
+exit_codes: { allow: 0, block: 2 }
+envelope_discriminator: hook_event_name
+hooks: true

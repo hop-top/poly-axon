@@ -1,0 +1,39 @@
+name: CI (parity)
+
+on:
+  push:
+    branches: [main]
+    # This is the only job checking cross-language agreement, so its
+    # filter stays generous by design: any change that could shift what
+    # any of the three languages emit must re-run it. Needs Go, Node and
+    # Python together in one runner — can't be split per language.
+    # "tools/parity/**" is the root orchestrator; the Go emitter now
+    # lives at go/tools/parity and is covered by "**.go", and
+    # "go/spec/**" is the generated tree that emitter embeds. A missed
+    # trigger here means a cross-language divergence ships unnoticed, so
+    # err toward over-triggering.
+    paths: ["spec/**", "go/spec/**", "tools/parity/**", "go/tools/parity/**", "ts/**", "py/**", "**.go", "go/go.mod", "go/go.sum", "mise.toml", "Makefile", ".github/workflows/ci-parity.yml"]
+  pull_request:
+    branches: [main]
+    paths: ["spec/**", "go/spec/**", "tools/parity/**", "go/tools/parity/**", "ts/**", "py/**", "**.go", "go/go.mod", "go/go.sum", "mise.toml", "Makefile", ".github/workflows/ci-parity.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  parity:
+    name: Parity (go + ts + py)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # >>> kit-managed: toolchain >>>
+      - uses: jdx/mise-action@v2
+        with:
+          install: true
+          cache: true
+      - run: mise run install
+      # <<< kit-managed: toolchain <<<
+
+      - name: Run parity harness
+        run: make test-parity

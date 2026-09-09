@@ -1,0 +1,188 @@
+host: gemini
+mappings:
+  - native:
+      - -p
+    support: native
+    universal: ModeRun
+  - native:
+      - (default)
+    support: native
+    universal: ModeInteractive
+  - native:
+      - --resume <id>
+    support: native
+    universal: ModeResume
+  - native:
+      - --resume latest
+    support: native
+    universal: Continue
+  - notes: no native fork; resume + fresh session would lose lineage
+    support: unsupported
+    universal: Fork
+  - native:
+      - CommandSpec.Dir
+    notes: no --cd flag; CWD applied via process working directory
+    support: native
+    universal: CWD
+  - native:
+      - -m/--model
+    support: native
+    universal: Model
+  - notes: no --agent flag; gemini personas configured globally
+    support: unsupported
+    universal: Agent
+  - native:
+      - (default)
+    support: native
+    universal: OutputText
+  - native:
+      - --output-format json
+    support: native
+    universal: OutputJSON
+  - native:
+      - --output-format stream-json
+    support: native
+    universal: OutputStreamJSON
+  - native:
+      - --approval-mode plan
+    notes: no first-class read-only sandbox; plan mode is read-only by convention
+    support: shim
+    universal: SandboxReadOnly
+  - native:
+      - --sandbox
+    notes: boolean --sandbox flag; not a tier
+    support: shim
+    universal: SandboxWorkspaceWrite
+  - native:
+      - --yolo
+    notes: requires Config["uxp.allow_dangerous"]="true"
+    support: dangerous
+    universal: SandboxDangerFullAccess
+  - native:
+      - (default)
+    support: native
+    universal: ApprovalAsk
+  - native:
+      - --approval-mode plan
+    support: native
+    universal: ApprovalPlan
+  - native:
+      - --approval-mode auto_edit
+    support: native
+    universal: ApprovalAutoEdit
+  - native:
+      - --approval-mode yolo
+    notes: requires Config["uxp.allow_dangerous"]="true"
+    support: dangerous
+    universal: ApprovalAutoAll
+  - notes: no equivalent to claude's dontAsk; refuse rather than shim ambiguously
+    support: unsupported
+    universal: ApprovalNever
+  - native:
+      - --include-directories <dir> (repeatable)
+    support: native
+    universal: AddDirs
+  - native:
+      - S-1+S-3 (parent-dir reduce → --include-directories + prompt-block)
+    notes: no per-file flag; gemini accepts directory scope only
+    support: shim
+    universal: Files
+  - native:
+      - S-3 (prompt-block)
+    notes: no headless image flag; --prompt is text-only
+    support: shim
+    universal: Images
+tools:
+  - controllable: true
+    native_names:
+      - shell
+    notes: subject to Policy Engine via --policy / --admin-policy
+    permission: exec
+    support: native
+    transcript: native
+    universal: shell.exec
+  - controllable: true
+    native_names:
+      - read_file
+    permission: read
+    support: native
+    transcript: native
+    universal: file.read
+  - controllable: true
+    native_names:
+      - write_file
+    permission: write
+    support: native
+    transcript: native
+    universal: file.write
+  - controllable: true
+    native_names:
+      - edit_file
+    permission: write
+    support: native
+    transcript: native
+    universal: file.edit
+  - controllable: true
+    native_names:
+      - search_file_content
+      - glob
+    permission: read
+    support: native
+    transcript: native
+    universal: file.search
+  - controllable: true
+    native_names:
+      - google_web_search
+    permission: network
+    support: native
+    transcript: native
+    universal: web.search
+  - controllable: true
+    native_names:
+      - web_fetch
+    permission: network
+    support: native
+    transcript: native
+    universal: web.fetch
+  - controllable: false
+    notes: no built-in TodoWrite analog; available via skills
+    permission: task
+    support: shim
+    transcript: unavailable
+    universal: todo.write
+  - controllable: false
+    notes: subagents available via skills; not a built-in tool
+    permission: task
+    support: shim
+    transcript: unavailable
+    universal: task.spawn
+  - controllable: false
+    notes: no plan-mode update tool; use --approval-mode plan for plan-mode runs
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: plan.update
+  - controllable: true
+    native_names:
+      - MCP
+    notes: MCP servers via gemini mcp subcommand and --allowed-mcp-server-names
+    permission: exec
+    support: native
+    transcript: native
+    universal: mcp.call
+  - controllable: false
+    notes: Gemini models accept image input via prompt media; no headless flag
+    permission: read
+    support: native
+    transcript: partial
+    universal: image.read
+  - controllable: false
+    permission: browser
+    support: unsupported
+    transcript: unavailable
+    universal: browser.operate
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: user.message

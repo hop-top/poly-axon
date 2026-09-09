@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "opencode SessionStart input",
+  "type": "object",
+  "required": ["type", "session_id"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "session.created" },
+    "session_id": { "type": "string" }
+  }
+}

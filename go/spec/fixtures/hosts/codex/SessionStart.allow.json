@@ -1,0 +1,6 @@
+{
+  "hookSpecificOutput": {
+    "additionalContext": "session initialized"
+  },
+  "continue": true
+}

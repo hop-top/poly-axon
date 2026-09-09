@@ -1,0 +1,20 @@
+name: release-please-preflight
+
+on:
+  pull_request:
+    paths:
+      - '.github/release-please-config.json'
+      - '.github/.release-please-manifest.json'
+      - '.github/workflows/publish.yml'
+      - '.github/workflows/release-please.yml'
+      - 'go.mod'
+      - 'ts/package.json'
+      - 'py/pyproject.toml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    uses: hop-top/.github/.github/workflows/release-please-preflight.yml@v0

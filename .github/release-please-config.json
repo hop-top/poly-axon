@@ -1,0 +1,74 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "separate-pull-requests": true,
+  "pull-request-title-pattern": "chore(release):${component} ${version}",
+  "include-component-in-tag": true,
+  "tag-separator": "/",
+  "label": "status:release-pending",
+  "release-label": "status:release-tagged",
+  "changelog-sections": [
+    { "type": "feat", "section": "Features" },
+    { "type": "fix", "section": "Bug Fixes" },
+    { "type": "perf", "section": "Performance" },
+    { "type": "refactor", "section": "Refactoring", "hidden": true },
+    { "type": "docs", "section": "Documentation", "hidden": true },
+    { "type": "test", "section": "Tests", "hidden": true },
+    { "type": "build", "section": "Build", "hidden": true },
+    { "type": "ci", "section": "CI", "hidden": true },
+    { "type": "chore", "section": "Miscellaneous", "hidden": true }
+  ],
+  "packages": {
+    ".": {
+      "release-type": "go",
+      "component": "poly-axon",
+      "changelog-path": "CHANGELOG.md",
+      "initial-version": "0.1.0-alpha.0",
+      "prerelease": true,
+      "prerelease-type": "alpha.0",
+      "versioning": "prerelease",
+      "bump-minor-pre-major": true,
+      "exclude-paths": ["go", "ts", "py", "spec"]
+    },
+    "go": {
+      "release-type": "go",
+      "component": "axon",
+      "changelog-path": "CHANGELOG.md",
+      "initial-version": "0.1.0-alpha.0",
+      "prerelease": true,
+      "prerelease-type": "alpha.0",
+      "versioning": "prerelease",
+      "bump-minor-pre-major": true
+    },
+    "ts": {
+      "release-type": "node",
+      "component": "axon-ts",
+      "changelog-path": "CHANGELOG.md",
+      "initial-version": "0.1.0-alpha.0",
+      "prerelease": true,
+      "prerelease-type": "alpha.0",
+      "versioning": "prerelease",
+      "bump-minor-pre-major": true
+    },
+    "py": {
+      "release-type": "python",
+      "component": "axon-py",
+      "package-name": "hop-top-axon",
+      "changelog-path": "CHANGELOG.md",
+      "initial-version": "0.1.0-alpha.0",
+      "prerelease": true,
+      "prerelease-type": "alpha.0",
+      "versioning": "prerelease",
+      "bump-minor-pre-major": true
+    },
+    "spec": {
+      "release-type": "simple",
+      "component": "spec",
+      "changelog-path": "CHANGELOG.md",
+      "initial-version": "0.1.0-alpha.0",
+      "prerelease": true,
+      "prerelease-type": "alpha.0",
+      "versioning": "prerelease",
+      "bump-minor-pre-major": true
+    }
+  }
+}

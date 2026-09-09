@@ -1,0 +1,171 @@
+host: kimi
+mappings:
+  - native:
+      - --print
+    support: native
+    universal: ModeRun
+  - native:
+      - (default)
+    support: native
+    universal: ModeInteractive
+  - native:
+      - -S/--session <id>
+    support: native
+    universal: ModeResume
+  - native:
+      - -C/--continue
+    support: native
+    universal: Continue
+  - support: unsupported
+    universal: Fork
+  - native:
+      - -w/--work-dir <dir>
+    support: native
+    universal: CWD
+  - native:
+      - -m/--model
+    support: native
+    universal: Model
+  - native:
+      - --agent default|okabe
+      - --agent-file <FILE>
+    support: native
+    universal: Agent
+  - native:
+      - (default)
+    support: native
+    universal: OutputText
+  - native:
+      - --print --output-format text --final-message-only (alias --quiet)
+    notes: kimi has no json choice; final-message-text shim
+    support: shim
+    universal: OutputJSON
+  - native:
+      - --output-format stream-json
+    support: native
+    universal: OutputStreamJSON
+  - support: unsupported
+    universal: SandboxReadOnly
+  - support: unsupported
+    universal: SandboxWorkspaceWrite
+  - notes: kimi has no per-invocation sandbox flag
+    support: unsupported
+    universal: SandboxDangerFullAccess
+  - native:
+      - (default)
+    support: native
+    universal: ApprovalAsk
+  - native:
+      - --plan
+    support: native
+    universal: ApprovalPlan
+  - notes: --yolo and --afk are auto-all only; refused per anti-shim
+    support: unsupported
+    universal: ApprovalAutoEdit
+  - native:
+      - --yolo
+      - --afk
+    support: dangerous
+    universal: ApprovalAutoAll
+  - support: unsupported
+    universal: ApprovalNever
+  - native:
+      - --add-dir <dir> (repeatable)
+    support: native
+    universal: AddDirs
+  - native:
+      - S-1+S-3 (parent-dir reduce → --add-dir + prompt-block)
+    support: shim
+    universal: Files
+  - native:
+      - S-3 (prompt-block)
+    support: shim
+    universal: Images
+tools:
+  - controllable: true
+    native_names:
+      - bash
+    permission: exec
+    support: native
+    transcript: native
+    universal: shell.exec
+  - controllable: true
+    native_names:
+      - read
+    permission: read
+    support: native
+    transcript: native
+    universal: file.read
+  - controllable: true
+    native_names:
+      - write
+    permission: write
+    support: native
+    transcript: native
+    universal: file.write
+  - controllable: true
+    native_names:
+      - edit
+    permission: write
+    support: native
+    transcript: native
+    universal: file.edit
+  - controllable: false
+    notes: via shell rg/find/grep
+    permission: read
+    support: shim
+    transcript: unavailable
+    universal: file.search
+  - controllable: false
+    notes: via skills/MCP
+    permission: network
+    support: shim
+    transcript: unavailable
+    universal: web.search
+  - controllable: false
+    permission: network
+    support: shim
+    transcript: unavailable
+    universal: web.fetch
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: todo.write
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: task.spawn
+  - controllable: false
+    notes: use --plan flag for plan-mode runs
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: plan.update
+  - controllable: true
+    native_names:
+      - MCP
+    notes: via --mcp-config / --mcp-config-file (repeatable)
+    permission: exec
+    support: native
+    transcript: native
+    universal: mcp.call
+  - controllable: false
+    permission: read
+    support: unsupported
+    transcript: unavailable
+    universal: image.read
+  - controllable: false
+    permission: browser
+    support: unsupported
+    transcript: unavailable
+    universal: browser.operate
+  - controllable: false
+    native_names:
+      - AskUserQuestion
+    notes: auto-dismissed under --print or --afk modes
+    permission: task
+    support: native
+    transcript: native
+    universal: user.message

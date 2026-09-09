@@ -1,0 +1,34 @@
+{
+  "name": "axon",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "dev",
+
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "username": "dev",
+      "installZsh": true
+    },
+    "ghcr.io/jdx/mise/features/mise:1": {}
+  },
+
+  // >>> kit-managed: lifecycle >>>
+  "postCreateCommand": "mise trust && mise install && mise run install",
+  "postStartCommand": "mise install --quiet",
+  // <<< kit-managed: lifecycle <<<
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // >>> kit-managed: extensions >>>
+        "jdx.mise-vscode",
+        "EditorConfig.EditorConfig",
+        "golang.go",
+        // <<< kit-managed: extensions <<<
+      ]
+    }
+  },
+
+  "forwardPorts": [16686, 4318]
+}

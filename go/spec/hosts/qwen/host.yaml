@@ -1,0 +1,6 @@
+# spec/hosts/qwen/host.yaml
+name: qwen
+status: active
+binaries: [qwen]
+store_roots:
+  data: ~/.qwen/tmp/

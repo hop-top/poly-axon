@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "axon host hook capabilities",
+  "type": "object",
+  "required": ["host", "native"],
+  "additionalProperties": false,
+  "properties": {
+    "host": { "type": "string" },
+    "host_version_range": { "type": "string" },
+    "native":  { "type": "array", "items": { "$ref": "#/definitions/pair" } },
+    "close":   { "type": "array", "items": { "$ref": "#/definitions/pair_with_note" } },
+    "synthesized": { "type": "object", "additionalProperties": { "$ref": "#/definitions/recipe" } },
+    "unsupported": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+  },
+  "definitions": {
+    "pair": {
+      "type": "object", "required": ["host_event", "event"], "additionalProperties": false,
+      "properties": { "host_event": { "type": "string" }, "event": { "type": "string" } }
+    },
+    "pair_with_note": {
+      "type": "object", "required": ["host_event", "event", "note"], "additionalProperties": false,
+      "properties": { "host_event": { "type": "string" }, "event": { "type": "string" }, "note": { "type": "string" } }
+    },
+    "recipe": {
+      "type": "object", "required": [], "additionalProperties": false,
+      "properties": {
+        "technique": { "type": "string", "enum": ["matcher", "daemon", "status_diff", "binary_wrap", "mcp_proxy"] },
+        "source": { "type": "string", "description": "host event the synthesis observes" },
+        "via": { "type": "string" },
+        "pattern": { "type": "string" },
+        "cost": { "type": "string", "enum": ["low", "medium", "high"] },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

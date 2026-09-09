@@ -1,0 +1,6 @@
+# spec/hosts/cursor-agent/host.yaml
+name: cursor-agent
+status: active
+binaries: [cursor-agent]
+store_roots:
+  data: ~/.cursor/chats/

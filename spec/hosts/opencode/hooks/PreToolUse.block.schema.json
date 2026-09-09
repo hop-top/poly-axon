@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "opencode PreToolUse block",
+  "type": "object",
+  "required": ["action", "message"],
+  "additionalProperties": false,
+  "properties": {
+    "action":  { "type": "string", "enum": ["block"] },
+    "message": { "type": "string" }
+  }
+}

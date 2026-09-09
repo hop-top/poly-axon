@@ -1,0 +1,81 @@
+# Codex CLI adapter capabilities.
+# 3 native events (full parity), 2 close (real native hooks, narrower tool
+# scope), 10 synthesized via shell regex / daemon / binary wrapper, 11
+# unsupported (no feasible workaround).
+host: codex
+host_version_range: ">=0.1.0"
+
+native:
+  - { host_event: SessionStart, event: SessionStart }
+  - { host_event: UserPromptSubmit, event: UserPromptSubmit }
+  - { host_event: Stop, event: Stop }
+
+close:
+  - { host_event: PreToolUse, event: PreToolUse, note: "Bash-only; apply_patch incomplete" }
+  - { host_event: PostToolUse, event: PostToolUse, note: "Bash-only; apply_patch incomplete" }
+
+synthesized:
+  CwdChanged:
+    technique: matcher
+    via: shell
+    pattern: "^cd\\s"
+    cost: low
+  WorktreeCreate:
+    technique: matcher
+    via: shell
+    pattern: "git\\s+worktree\\s+add"
+    cost: low
+  WorktreeRemove:
+    technique: matcher
+    via: shell
+    pattern: "git\\s+worktree\\s+remove"
+    cost: low
+  InstructionsLoaded:
+    technique: matcher
+    via: shell
+    pattern: "cat\\s+.*CLAUDE\\.md"
+    cost: low
+  PermissionRequest:
+    technique: matcher
+    via: shell
+    pattern: "rm\\s+-rf"
+    cost: medium
+    notes: "Heuristic: rm -rf commands trigger permission request via shellmatch"
+  PermissionDenied:
+    technique: matcher
+    via: shell
+    pattern: "shell block response"
+    cost: medium
+    notes: "Derived from shell command block response"
+  PostToolUseFailure:
+    technique: status_diff
+    via: shell
+    pattern: "PostToolUse + non-zero exit"
+    cost: low
+  FileChanged:
+    technique: daemon
+    via: fswatch
+    cost: high
+    notes: "Requires fswatch/inotifywait; daemon mode only"
+  ConfigChange:
+    technique: daemon
+    via: fswatch
+    cost: high
+    notes: "Watches ~/.codex/config.toml and .codex/hooks.json"
+  Notification:
+    technique: binary_wrap
+    cost: high
+    notes: "Requires binary wrapper parsing stdout for [notify] lines"
+
+unsupported:
+  - TeammateIdle
+  - SubagentStart
+  - SubagentStop
+  - TaskCreated
+  - TaskCompleted
+  - PreCompact
+  - PostCompact
+  - Elicitation
+  - ElicitationResult
+  - StopFailure
+  - SessionEnd

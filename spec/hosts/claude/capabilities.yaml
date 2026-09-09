@@ -1,0 +1,34 @@
+# technique/cost omitted: nerv's adapter file carries neither for this host.
+# Claude Code adapter capabilities.
+# Reference host — all 26 canonical events are native, using the
+# canonical event name as the host-side name.
+host: claude
+host_version_range: ">=1.0.0"
+
+native:
+  - { host_event: SessionStart, event: SessionStart }
+  - { host_event: SessionEnd, event: SessionEnd }
+  - { host_event: UserPromptSubmit, event: UserPromptSubmit }
+  - { host_event: PreToolUse, event: PreToolUse }
+  - { host_event: PostToolUse, event: PostToolUse }
+  - { host_event: PostToolUseFailure, event: PostToolUseFailure }
+  - { host_event: PermissionRequest, event: PermissionRequest }
+  - { host_event: PermissionDenied, event: PermissionDenied }
+  - { host_event: Notification, event: Notification }
+  - { host_event: SubagentStart, event: SubagentStart }
+  - { host_event: SubagentStop, event: SubagentStop }
+  - { host_event: TaskCreated, event: TaskCreated }
+  - { host_event: TaskCompleted, event: TaskCompleted }
+  - { host_event: Stop, event: Stop }
+  - { host_event: StopFailure, event: StopFailure }
+  - { host_event: TeammateIdle, event: TeammateIdle }
+  - { host_event: InstructionsLoaded, event: InstructionsLoaded }
+  - { host_event: ConfigChange, event: ConfigChange }
+  - { host_event: CwdChanged, event: CwdChanged }
+  - { host_event: FileChanged, event: FileChanged }
+  - { host_event: WorktreeCreate, event: WorktreeCreate }
+  - { host_event: WorktreeRemove, event: WorktreeRemove }
+  - { host_event: PreCompact, event: PreCompact }
+  - { host_event: PostCompact, event: PostCompact }
+  - { host_event: Elicitation, event: Elicitation }
+  - { host_event: ElicitationResult, event: ElicitationResult }

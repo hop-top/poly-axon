@@ -1,0 +1,11 @@
+# spec/hosts/codex/host.yaml
+name: codex
+aliases: [codex-cli]
+status: active
+binaries: [codex]
+store_roots:
+  data: ~/.codex/sessions/
+hook_config_paths: [".codex/hooks.json", "~/.codex/hooks.json"]
+exit_codes: { allow: 0, block: 2, rewrite: 3 }
+envelope_discriminator: hook_event_name
+hooks: true

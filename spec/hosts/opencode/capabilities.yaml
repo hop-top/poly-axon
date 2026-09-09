@@ -1,0 +1,67 @@
+# technique/cost omitted: nerv's adapter file carries neither for this host.
+# OpenCode adapter capabilities.
+# TaskCompleted -> todo.updated is filed as close, not native or
+# synthesized: nerv's capabilities.yaml marks it filtered (synthesized,
+# filter: status == 'completed') while its translate.go dispatch table
+# and xat's opencodeEventMap both treat todo.updated -> TaskCompleted as
+# unconditional -- see task report for the full disagreement.
+# UserPromptSubmit's duplicate synthesized entry (nerv lists it under
+# both close: and synthesized:) collapses into the single close: mapping
+# below.
+host: opencode
+
+native:
+  - { host_event: session.created, event: SessionStart }
+  - { host_event: session.deleted, event: SessionEnd }
+  - { host_event: session.idle, event: Stop }
+  - { host_event: session.error, event: StopFailure }
+  - { host_event: session.compacted, event: PostCompact }
+  - { host_event: tool.execute.before, event: PreToolUse }
+  - { host_event: tool.execute.after, event: PostToolUse }
+  - { host_event: file.edited, event: FileChanged }
+  - { host_event: permission.asked, event: PermissionRequest }
+  - { host_event: permission.replied, event: PermissionDenied }
+
+close:
+  - { host_event: tui.prompt.append, event: UserPromptSubmit, note: "fires per TUI prompt append, not per user-submitted turn" }
+  - { host_event: todo.updated, event: TaskCompleted, note: "requires filter: status == 'completed'" }
+
+synthesized:
+  Notification:
+    source: session.error
+    pattern: partial
+  SubagentStart:
+    source: tool.execute.before
+    pattern: "tool == 'task'"
+  SubagentStop:
+    source: tool.execute.after
+    pattern: "tool == 'task'"
+  InstructionsLoaded:
+    source: tool.execute.after
+    pattern: "tool == 'read' && path matches CLAUDE\\.md"
+  ConfigChange:
+    source: file.edited
+    pattern: "path matches config"
+  CwdChanged:
+    source: tool.execute.after
+    pattern: "tool == 'bash' && input matches '^cd\\b'"
+  WorktreeCreate:
+    source: tool.execute.after
+    pattern: "tool == 'bash' && input matches 'worktree add'"
+  WorktreeRemove:
+    source: tool.execute.after
+    pattern: "tool == 'bash' && input matches 'worktree remove'"
+  TaskCreated:
+    source: tool.execute.before
+    pattern: "tool == 'todo_write'"
+  Elicitation:
+    source: tool.execute.before
+    pattern: "tool matches '^mcp__'"
+  ElicitationResult:
+    source: tool.execute.after
+    pattern: "tool matches '^mcp__'"
+
+unsupported:
+  - TeammateIdle
+  - PreCompact
+  - PostToolUseFailure

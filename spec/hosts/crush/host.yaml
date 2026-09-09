@@ -1,0 +1,6 @@
+# spec/hosts/crush/host.yaml
+name: crush
+status: active
+binaries: [crush]
+store_roots:
+  data: ~/.local/share/crush/

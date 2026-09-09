@@ -1,0 +1,67 @@
+# technique/cost omitted: nerv's adapter file carries neither for this host.
+# Gemini CLI adapter capabilities.
+# BeforeToolSelection (gemini-native) dropped: it is an extension event,
+# not one of the 26 canonical events, so it does not appear here.
+host: gemini
+
+native:
+  - { host_event: SessionStart, event: SessionStart }
+  - { host_event: SessionEnd, event: SessionEnd }
+  - { host_event: BeforeTool, event: PreToolUse }
+  - { host_event: AfterTool, event: PostToolUse }
+  - { host_event: BeforeAgent, event: SubagentStart }
+  - { host_event: AfterAgent, event: SubagentStop }
+  - { host_event: Notification, event: Notification }
+  - { host_event: PreCompress, event: PreCompact }
+
+close:
+  - { host_event: BeforeModel, event: UserPromptSubmit, note: "fires per model call, not per user prompt" }
+  - { host_event: SessionEnd, event: Stop, note: "only fires on graceful exit" }
+
+synthesized:
+  PermissionRequest:
+    source: BeforeTool
+    pattern: auto-approve check
+  PermissionDenied:
+    source: BeforeTool
+    pattern: "exit=2"
+  PostToolUseFailure:
+    source: AfterTool
+    pattern: "tool_response.error present"
+  InstructionsLoaded:
+    source: AfterTool
+    pattern: "tool_name=Read, path matches CLAUDE.md|AGENTS.md|rules/*.md"
+  ConfigChange:
+    source: AfterTool
+    pattern: "tool_name=Write, path matches settings.json"
+  CwdChanged:
+    source: AfterTool
+    pattern: "tool_name=Bash|Shell, command matches ^cd\\b"
+  FileChanged:
+    source: AfterTool
+    pattern: "tool_name=Write|Edit"
+  WorktreeCreate:
+    source: AfterTool
+    pattern: "tool_name=Bash|Shell, command matches worktree add|git hop add"
+  WorktreeRemove:
+    source: AfterTool
+    pattern: "tool_name=Bash|Shell, command matches worktree remove|git hop remove"
+  TaskCreated:
+    source: BeforeTool
+    pattern: "tool_name matches TaskCreate|todo_write"
+  TaskCompleted:
+    source: AfterTool
+    pattern: "tool_name matches TaskUpdate, status diff → completed"
+  PostCompact:
+    source: AfterModel
+    pattern: "compaction marker in llm_response"
+  Elicitation:
+    source: BeforeTool
+    pattern: "tool_name matches ^mcp__"
+  ElicitationResult:
+    source: AfterTool
+    pattern: "tool_name matches ^mcp__"
+
+unsupported:
+  - TeammateIdle
+  - StopFailure

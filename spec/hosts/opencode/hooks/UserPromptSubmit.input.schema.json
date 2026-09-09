@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "opencode UserPromptSubmit input",
+  "type": "object",
+  "required": ["type", "session_id", "prompt"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "tui.prompt.append" },
+    "session_id": { "type": "string" },
+    "prompt": { "type": "string" }
+  }
+}

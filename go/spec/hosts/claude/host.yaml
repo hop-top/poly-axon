@@ -1,0 +1,11 @@
+# spec/hosts/claude/host.yaml
+name: claude
+aliases: [claude-code]
+status: active
+binaries: [claude]
+store_roots:
+  data: ~/.claude/projects/
+hook_config_paths: ["~/.claude/settings.json", ".claude/settings.json"]
+exit_codes: { allow: 0, block: 2, rewrite: 3 }
+envelope_discriminator: hook_event_name
+hooks: true

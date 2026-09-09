@@ -1,0 +1,193 @@
+host: codex
+mappings:
+  - native:
+      - exec
+    support: native
+    universal: ModeRun
+  - native:
+      - (default)
+    support: native
+    universal: ModeInteractive
+  - native:
+      - exec resume <id>
+    notes: headless resume; codex resume is the interactive TUI flavor
+    support: native
+    universal: ModeResume
+  - native:
+      - exec resume --last
+    support: native
+    universal: Continue
+  - native:
+      - fork <id>
+      - fork --last
+    support: native
+    universal: Fork
+  - native:
+      - -C/--cd <DIR>
+    notes: also set CommandSpec.Dir for parity with non-codex callers
+    support: native
+    universal: CWD
+  - native:
+      - -m/--model
+    support: native
+    universal: Model
+  - notes: no --agent; use codex.profile Config key for --profile selection
+    support: unsupported
+    universal: Agent
+  - native:
+      - (default)
+    support: native
+    universal: OutputText
+  - native:
+      - -o/--output-last-message <FILE>
+    notes: codex writes the final message to a file path; caller must set Config["codex.output_last_message_path"]
+    support: shim
+    universal: OutputJSON
+  - native:
+      - --json
+    support: native
+    universal: OutputStreamJSON
+  - native:
+      - -s read-only
+    support: native
+    universal: SandboxReadOnly
+  - native:
+      - -s workspace-write
+    support: native
+    universal: SandboxWorkspaceWrite
+  - native:
+      - -s danger-full-access
+    notes: requires Config["uxp.allow_dangerous"]="true"
+    support: dangerous
+    universal: SandboxDangerFullAccess
+  - native:
+      - -a on-request
+    support: native
+    universal: ApprovalAsk
+  - native:
+      - -s read-only -a never (S-6)
+    notes: no native plan mode; cross-shim with read-only sandbox + never approval
+    support: shim
+    universal: ApprovalPlan
+  - notes: 'refused: no native auto-edit; would require degrading to dangerous bypass'
+    support: unsupported
+    universal: ApprovalAutoEdit
+  - native:
+      - --dangerously-bypass-approvals-and-sandbox
+    notes: requires Config["uxp.allow_dangerous"]="true"
+    support: dangerous
+    universal: ApprovalAutoAll
+  - native:
+      - -a never
+    support: native
+    universal: ApprovalNever
+  - native:
+      - --add-dir <DIR> (repeatable)
+    support: native
+    universal: AddDirs
+  - native:
+      - S-1+S-3 (parent-dir reduce → --add-dir + prompt-block)
+    notes: no per-file flag; codex accepts directory scope only
+    support: shim
+    universal: Files
+  - native:
+      - -i/--image <FILE>... (variadic)
+    support: native
+    universal: Images
+tools:
+  - controllable: true
+    native_names:
+      - exec_command
+    notes: subject to -s sandbox tier and -a approval policy
+    permission: exec
+    support: native
+    transcript: native
+    universal: shell.exec
+  - controllable: true
+    native_names:
+      - exec_command
+    notes: codex reads files via shell; no distinct read tool
+    permission: read
+    support: shim
+    transcript: native
+    universal: file.read
+  - controllable: true
+    native_names:
+      - exec_command
+    notes: codex writes new files via shell (heredoc, tee, cat); apply_patch is file.edit
+    permission: write
+    support: shim
+    transcript: native
+    universal: file.write
+  - controllable: true
+    native_names:
+      - apply_patch
+    notes: codex emits unified diffs; the host applies them via codex apply
+    permission: write
+    support: native
+    transcript: native
+    universal: file.edit
+  - controllable: true
+    native_names:
+      - exec_command
+    notes: no distinct glob/grep tool; uses shell rg/find/grep
+    permission: read
+    support: shim
+    transcript: native
+    universal: file.search
+  - controllable: true
+    native_names:
+      - web_search
+    notes: enabled via --search; native Responses tool
+    permission: network
+    support: native
+    transcript: native
+    universal: web.search
+  - controllable: false
+    notes: no built-in fetch tool; available via MCP or shell curl
+    permission: network
+    support: shim
+    transcript: unavailable
+    universal: web.fetch
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: todo.write
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: task.spawn
+  - controllable: true
+    native_names:
+      - update_plan
+    notes: codex's distinctive plan-update tool; emitted in transcripts
+    permission: task
+    support: native
+    transcript: native
+    universal: plan.update
+  - controllable: true
+    native_names:
+      - MCP
+    notes: MCP servers via codex mcp subcommand
+    permission: exec
+    support: native
+    transcript: native
+    universal: mcp.call
+  - controllable: false
+    notes: via -i/--image flag; attached to initial prompt
+    permission: read
+    support: native
+    transcript: partial
+    universal: image.read
+  - controllable: false
+    permission: browser
+    support: unsupported
+    transcript: unavailable
+    universal: browser.operate
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: user.message

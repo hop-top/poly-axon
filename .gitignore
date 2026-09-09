@@ -1,0 +1,36 @@
+# >>> kit-managed: gitignore >>>
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Editor/IDE
+.idea/
+.vscode/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Compose service bind-mount data (postgres, redis, minio, etc.)
+.data/
+# Go
+vendor/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+coverage.out
+# <<< kit-managed: gitignore <<<
+
+# Build output
+bin/
+
+# Python (tools/parity)
+__pycache__/
+*.pyc

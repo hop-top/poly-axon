@@ -1,0 +1,6 @@
+# spec/hosts/copilot/host.yaml
+name: copilot
+status: active
+binaries: [copilot]
+store_roots:
+  data: ~/.copilot/state/

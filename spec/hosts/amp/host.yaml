@@ -1,0 +1,6 @@
+# spec/hosts/amp/host.yaml
+name: amp
+status: active
+binaries: [amp]
+store_roots:
+  data: ~/.amp/

@@ -1,0 +1,85 @@
+name: CI (Go)
+
+on:
+  push:
+    branches: [main]
+    # The workflow file + mise.toml are in the filter so toolchain and
+    # workflow repairs verify themselves instead of waiting for the
+    # next .go push. go.mod/go.sum/.golangci.yml moved under go/ with
+    # the module; go/spec/** is the committed generated mirror the
+    # module embeds, so a drift there must re-run the build.
+    paths: ["**.go", "go/go.mod", "go/go.sum", "go/.golangci.yml", "go/spec/**", "mise.toml", "Makefile", ".github/workflows/ci-go.yml"]
+  pull_request:
+    branches: [main]
+    paths: ["**.go", "go/go.mod", "go/go.sum", "go/.golangci.yml", "go/spec/**", "mise.toml", "Makefile", ".github/workflows/ci-go.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # >>> kit-managed: toolchain >>>
+      - uses: jdx/mise-action@v2
+        with:
+          install: true
+          cache: true
+      - run: mise run install
+      # <<< kit-managed: toolchain <<<
+
+      - name: golangci-lint
+        # Runs via the Makefile so the working directory and config
+        # location stay defined in exactly one place.
+        run: make lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # >>> kit-managed: toolchain >>>
+      - uses: jdx/mise-action@v2
+        with:
+          install: true
+          cache: true
+      - run: mise run install
+      # <<< kit-managed: toolchain <<<
+
+      - name: Run tests
+        # -race requires cgo. `mise exec` re-applies its own [env] over
+        # the job/step env, so a step-level CGO_ENABLED would be silently
+        # clobbered: env(1) after mise exec is the layer that wins over
+        # any mise [env] entry.
+        # `go -C go` puts the module root in scope; -coverprofile is
+        # resolved relative to that directory, so the profile lands at
+        # go/coverage.out and the upload path matches.
+        run: mise exec -- env CGO_ENABLED=1 go -C go test -race -coverprofile=coverage.out ./...
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-go
+          path: go/coverage.out
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - uses: actions/checkout@v4
+
+      # >>> kit-managed: toolchain >>>
+      - uses: jdx/mise-action@v2
+        with:
+          install: true
+          cache: true
+      - run: mise run install
+      # <<< kit-managed: toolchain <<<
+
+      - name: Build
+        run: make build

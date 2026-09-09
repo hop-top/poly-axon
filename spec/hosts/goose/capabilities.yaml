@@ -1,0 +1,68 @@
+# technique/cost omitted: nerv's adapter file carries neither for this host.
+# Goose CLI adapter capabilities.
+# TaskCreated's duplicate synthesized entry (nerv lists it under both
+# close: and synthesized:, describing the same tasks_update Pending->Running
+# transition) collapses into the single close: mapping below, which carries
+# the actual host-side event name. Extension events not in the 26 canonical
+# events (BeforeToolSelection, LspDiagnostics, SessionDiff, SessionStatus)
+# are dropped from unsupported — see task report.
+host: goose
+
+# notes below (SSE session lifecycle; SSE Finish event with reason +
+# token_state; SSE Notification via request_id; SSE UpdateConversation with
+# full Conversation object; ActionRequired route in goose-server;
+# Permission::DenyOnce / AlwaysDeny from permission system; summon
+# subagent_created/completed notification; TasksComplete notification
+# event; SSE Error event) describe each row's goose-side signal; the
+# schema's native pair has no note field, so they live here as comments.
+native:
+  - { host_event: session.start, event: SessionStart }
+  - { host_event: session.end, event: SessionEnd }
+  - { host_event: finish, event: Stop }
+  - { host_event: notification, event: Notification }
+  - { host_event: update_conversation, event: PostCompact }
+  - { host_event: action_required, event: PermissionRequest }
+  - { host_event: permission_denied, event: PermissionDenied }
+  - { host_event: subagent_created, event: SubagentStart }
+  - { host_event: subagent_completed, event: SubagentStop }
+  - { host_event: tasks_complete, event: TaskCompleted }
+  - { host_event: error, event: StopFailure }
+
+close:
+  - { host_event: request.start, event: UserPromptSubmit, note: "SSE request start; approximate — fires per request, not per user prompt" }
+  - { host_event: tasks_update, event: TaskCreated, note: "TasksUpdate Pending->Running transition in notification" }
+
+synthesized:
+  PreToolUse:
+    source: extension
+    pattern: "tool.before event from nerv bridge MCP extension"
+  PostToolUse:
+    source: extension
+    pattern: "tool.after event from nerv bridge MCP extension"
+  PostToolUseFailure:
+    source: extension
+    pattern: "tool.error event from nerv bridge MCP extension"
+  FileChanged:
+    source: extension
+    pattern: "developer ext file ops (text_editor, write_file)"
+  CwdChanged:
+    source: shell-match
+    pattern: "developer__shell command matches ^cd\\b"
+  WorktreeCreate:
+    source: shell-match
+    pattern: "developer__shell command matches worktree add|git hop add"
+  WorktreeRemove:
+    source: shell-match
+    pattern: "developer__shell command matches worktree remove|git hop remove"
+  PreCompact:
+    source: signal
+    pattern: "compaction request from session"
+  InstructionsLoaded:
+    source: extension
+    pattern: "skills extension load event"
+
+unsupported:
+  - TeammateIdle
+  - ConfigChange
+  - Elicitation
+  - ElicitationResult

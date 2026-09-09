@@ -1,0 +1,186 @@
+host: opencode
+mappings:
+  - native:
+      - run [message..]
+    support: native
+    universal: ModeRun
+  - native:
+      - (default)
+    support: native
+    universal: ModeInteractive
+  - native:
+      - run --session <id>
+    support: native
+    universal: ModeResume
+  - native:
+      - run --continue
+    support: native
+    universal: Continue
+  - native:
+      - --fork
+    notes: with --continue or --session
+    support: native
+    universal: Fork
+  - native:
+      - --dir <dir>
+    notes: for run/resume; bare TUI uses positional project arg
+    support: native
+    universal: CWD
+  - native:
+      - -m/--model <provider/model>
+    support: native
+    universal: Model
+  - native:
+      - --agent <name>
+    support: native
+    universal: Agent
+  - native:
+      - (default)
+    support: native
+    universal: OutputText
+  - native:
+      - --format json
+    notes: opencode --format json is JSONL event stream; adapter records shim, caller must reduce to final assistant message
+    support: shim
+    universal: OutputJSON
+  - native:
+      - --format json
+    support: native
+    universal: OutputStreamJSON
+  - notes: no per-tier sandbox; configure via opencode config
+    support: unsupported
+    universal: SandboxReadOnly
+  - notes: no per-tier sandbox; configure via opencode config
+    support: unsupported
+    universal: SandboxWorkspaceWrite
+  - native:
+      - --dangerously-skip-permissions
+    notes: requires Config["uxp.allow_dangerous"]="true"
+    support: dangerous
+    universal: SandboxDangerFullAccess
+  - native:
+      - (default)
+    support: native
+    universal: ApprovalAsk
+  - notes: no native plan mode
+    support: unsupported
+    universal: ApprovalPlan
+  - notes: 'refused: no native auto-edit; would require degrading to dangerous bypass'
+    support: unsupported
+    universal: ApprovalAutoEdit
+  - native:
+      - --dangerously-skip-permissions
+    notes: requires Config["uxp.allow_dangerous"]="true"
+    support: dangerous
+    universal: ApprovalAutoAll
+  - support: unsupported
+    universal: ApprovalNever
+  - native:
+      - S-2 (enumerate dir → repeated --file)
+    notes: no --add-dir flag; walk respects Config["uxp.shim.dir_to_files_max"] (default 200) and refuses overflow
+    support: shim
+    universal: AddDirs
+  - native:
+      - -f/--file <path> (repeatable)
+    support: native
+    universal: Files
+  - native:
+      - -f/--file <path>
+    notes: opencode does not distinguish images; reuses --file
+    support: shim
+    universal: Images
+tools:
+  - controllable: true
+    native_names:
+      - bash
+    permission: exec
+    support: native
+    transcript: native
+    universal: shell.exec
+  - controllable: true
+    native_names:
+      - read
+    permission: read
+    support: native
+    transcript: native
+    universal: file.read
+  - controllable: true
+    native_names:
+      - write
+    permission: write
+    support: native
+    transcript: native
+    universal: file.write
+  - controllable: true
+    native_names:
+      - edit
+    permission: write
+    support: native
+    transcript: native
+    universal: file.edit
+  - controllable: true
+    native_names:
+      - grep
+      - glob
+      - list
+    permission: read
+    support: native
+    transcript: native
+    universal: file.search
+  - controllable: false
+    notes: available via plugins/MCP, not built-in
+    permission: network
+    support: shim
+    transcript: unavailable
+    universal: web.search
+  - controllable: true
+    native_names:
+      - webfetch
+    permission: network
+    support: native
+    transcript: native
+    universal: web.fetch
+  - controllable: true
+    native_names:
+      - todowrite
+    permission: task
+    support: native
+    transcript: native
+    universal: todo.write
+  - controllable: true
+    native_names:
+      - task
+    notes: subagent invocation via opencode agents subcommand
+    permission: task
+    support: native
+    transcript: native
+    universal: task.spawn
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: plan.update
+  - controllable: true
+    native_names:
+      - MCP
+    notes: MCP servers via opencode mcp subcommand
+    permission: exec
+    support: native
+    transcript: native
+    universal: mcp.call
+  - controllable: false
+    notes: via -f/--file (no distinct image flag)
+    permission: read
+    support: shim
+    transcript: partial
+    universal: image.read
+  - controllable: false
+    permission: browser
+    support: unsupported
+    transcript: unavailable
+    universal: browser.operate
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: user.message

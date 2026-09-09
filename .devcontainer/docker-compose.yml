@@ -1,0 +1,33 @@
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/base:debian
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_SERVICE_NAME: axon
+    depends_on:
+      - otel-collector
+
+# >>> kit-managed: telemetry >>>
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.112.0
+    command: ["--config=/etc/otel-config.yaml"]
+    volumes:
+      - ./otel-config.yaml:/etc/otel-config.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.62
+    ports:
+      - "16686:16686" # UI
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+# <<< kit-managed: telemetry <<<
+
+# >>> kit-managed: opted-in services >>>
+  # postgres, redis, minio, mailpit, redpanda appended here by --services
+# <<< kit-managed: opted-in services <<<

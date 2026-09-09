@@ -1,0 +1,167 @@
+host: cursor-agent
+mappings:
+  - native:
+      - -p/--print
+    support: native
+    universal: ModeRun
+  - native:
+      - (default)
+    support: native
+    universal: ModeInteractive
+  - native:
+      - --resume <id>
+    support: native
+    universal: ModeResume
+  - native:
+      - resume (subcommand)
+    support: native
+    universal: Continue
+  - support: unsupported
+    universal: Fork
+  - native:
+      - CommandSpec.Dir
+    support: native
+    universal: CWD
+  - native:
+      - --model
+    support: native
+    universal: Model
+  - support: unsupported
+    universal: Agent
+  - native:
+      - (default)
+    support: native
+    universal: OutputText
+  - native:
+      - --output-format json
+    notes: requires --print
+    support: native
+    universal: OutputJSON
+  - native:
+      - --output-format stream-json
+    notes: requires --print; --stream-partial-output for deltas
+    support: native
+    universal: OutputStreamJSON
+  - notes: sandbox is configured via cursor-agent sandbox subcommand, not per-invocation
+    support: unsupported
+    universal: SandboxReadOnly
+  - support: unsupported
+    universal: SandboxWorkspaceWrite
+  - native:
+      - -f/--force
+    notes: requires Config["uxp.allow_dangerous"]="true"
+    support: dangerous
+    universal: SandboxDangerFullAccess
+  - native:
+      - (default)
+    support: native
+    universal: ApprovalAsk
+  - support: unsupported
+    universal: ApprovalPlan
+  - notes: -f/--force is auto-all only; refused per anti-shim
+    support: unsupported
+    universal: ApprovalAutoEdit
+  - native:
+      - -f/--force
+    support: dangerous
+    universal: ApprovalAutoAll
+  - support: unsupported
+    universal: ApprovalNever
+  - native:
+      - S-3 (prompt-block listing)
+    notes: no --add-dir flag
+    support: shim
+    universal: AddDirs
+  - native:
+      - S-3 (prompt-block)
+    notes: no per-file flag
+    support: shim
+    universal: Files
+  - native:
+      - S-3 (prompt-block)
+    support: shim
+    universal: Images
+tools:
+  - controllable: true
+    native_names:
+      - bash
+    notes: subject to sandbox subcommand allowlist
+    permission: exec
+    support: native
+    transcript: native
+    universal: shell.exec
+  - controllable: false
+    native_names:
+      - read
+    permission: read
+    support: native
+    transcript: native
+    universal: file.read
+  - controllable: true
+    native_names:
+      - write
+    permission: write
+    support: native
+    transcript: native
+    universal: file.write
+  - controllable: true
+    native_names:
+      - edit
+    permission: write
+    support: native
+    transcript: native
+    universal: file.edit
+  - controllable: false
+    notes: uses shell rg/find/grep
+    permission: read
+    support: shim
+    transcript: unavailable
+    universal: file.search
+  - controllable: false
+    permission: network
+    support: unsupported
+    transcript: unavailable
+    universal: web.search
+  - controllable: false
+    permission: network
+    support: unsupported
+    transcript: unavailable
+    universal: web.fetch
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: todo.write
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: task.spawn
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: plan.update
+  - controllable: true
+    native_names:
+      - MCP
+    notes: managed via cursor-agent mcp subcommand
+    permission: exec
+    support: native
+    transcript: native
+    universal: mcp.call
+  - controllable: false
+    permission: read
+    support: unsupported
+    transcript: unavailable
+    universal: image.read
+  - controllable: false
+    permission: browser
+    support: unsupported
+    transcript: unavailable
+    universal: browser.operate
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: user.message

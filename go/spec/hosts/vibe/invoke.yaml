@@ -1,0 +1,159 @@
+host: vibe
+mappings:
+  - native:
+      - -p/--prompt
+    support: native
+    universal: ModeRun
+  - native:
+      - (default)
+    support: native
+    universal: ModeInteractive
+  - native:
+      - --resume <id>
+    support: native
+    universal: ModeResume
+  - native:
+      - -c/--continue
+    support: native
+    universal: Continue
+  - support: unsupported
+    universal: Fork
+  - native:
+      - --workdir <dir>
+    support: native
+    universal: CWD
+  - notes: vibe selects model via config; use --agent
+    support: unsupported
+    universal: Model
+  - native:
+      - --agent default|plan|accept-edits|auto-approve|<custom>
+    support: native
+    universal: Agent
+  - native:
+      - --output text
+      - (default)
+    support: native
+    universal: OutputText
+  - native:
+      - --output json
+    support: native
+    universal: OutputJSON
+  - native:
+      - --output streaming
+    support: native
+    universal: OutputStreamJSON
+  - support: unsupported
+    universal: SandboxReadOnly
+  - support: unsupported
+    universal: SandboxWorkspaceWrite
+  - notes: no sandbox flag; --agent auto-approve handles approval, not isolation
+    support: unsupported
+    universal: SandboxDangerFullAccess
+  - native:
+      - (default)
+    support: native
+    universal: ApprovalAsk
+  - native:
+      - --agent plan (S-4)
+    notes: consumes --agent slot; mutually exclusive with caller-set Agent
+    support: shim
+    universal: ApprovalPlan
+  - native:
+      - --agent accept-edits (S-4)
+    notes: consumes --agent slot
+    support: shim
+    universal: ApprovalAutoEdit
+  - native:
+      - --agent auto-approve (S-4)
+    notes: requires Config["uxp.allow_dangerous"]="true"
+    support: dangerous
+    universal: ApprovalAutoAll
+  - support: unsupported
+    universal: ApprovalNever
+  - native:
+      - S-3 (prompt-block)
+    support: shim
+    universal: AddDirs
+  - native:
+      - S-3 (prompt-block)
+    support: shim
+    universal: Files
+  - native:
+      - S-3 (prompt-block)
+    support: shim
+    universal: Images
+tools:
+  - controllable: true
+    native_names:
+      - bash
+    notes: controllable via --enabled-tools (glob/regex)
+    permission: exec
+    support: native
+    transcript: native
+    universal: shell.exec
+  - controllable: true
+    permission: read
+    support: native
+    transcript: native
+    universal: file.read
+  - controllable: true
+    permission: write
+    support: native
+    transcript: native
+    universal: file.write
+  - controllable: true
+    permission: write
+    support: native
+    transcript: native
+    universal: file.edit
+  - controllable: false
+    permission: read
+    support: shim
+    transcript: unavailable
+    universal: file.search
+  - controllable: false
+    permission: network
+    support: unsupported
+    transcript: unavailable
+    universal: web.search
+  - controllable: false
+    permission: network
+    support: unsupported
+    transcript: unavailable
+    universal: web.fetch
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: todo.write
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: task.spawn
+  - controllable: false
+    notes: use --agent plan for plan-mode runs
+    permission: task
+    support: shim
+    transcript: partial
+    universal: plan.update
+  - controllable: false
+    permission: exec
+    support: unsupported
+    transcript: unavailable
+    universal: mcp.call
+  - controllable: false
+    permission: read
+    support: unsupported
+    transcript: unavailable
+    universal: image.read
+  - controllable: false
+    permission: browser
+    support: unsupported
+    transcript: unavailable
+    universal: browser.operate
+  - controllable: false
+    permission: task
+    support: unsupported
+    transcript: unavailable
+    universal: user.message

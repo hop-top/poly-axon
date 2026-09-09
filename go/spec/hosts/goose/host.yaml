@@ -1,0 +1,10 @@
+# spec/hosts/goose/host.yaml
+name: goose
+status: active
+binaries: [goose]
+store_roots:
+  data: ~/.local/share/goose/sessions/
+hook_config_paths: ["~/.config/goose/config.yaml", ".goose/config.yaml"]
+exit_codes: { allow: 0, block: 2 }
+envelope_discriminator: type
+hooks: true

@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "axon host identity",
+  "type": "object",
+  "required": ["name", "status", "binaries"],
+  "additionalProperties": false,
+  "properties": {
+    "name": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "aliases": { "type": "array", "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }, "uniqueItems": true },
+    "status": { "type": "string", "enum": ["active", "retired"] },
+    "binaries": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "store_roots": {
+      "type": "object", "additionalProperties": false,
+      "properties": { "config": { "type": "string" }, "data": { "type": "string" }, "cache": { "type": "string" }, "state": { "type": "string" } }
+    },
+    "config_file_patterns": { "type": "array", "items": { "type": "string" } },
+    "project_key_strategy": { "type": "string", "enum": ["slash-to-dash", "sha1", "sha256", "md5", "basename-alias", "embedded", "none"] },
+    "hook_config_paths": { "type": "array", "items": { "type": "string" } },
+    "exit_codes": {
+      "type": "object", "required": ["allow", "block"], "additionalProperties": false,
+      "properties": { "allow": { "type": "integer" }, "warn": { "type": "integer" }, "block": { "type": "integer" }, "rewrite": { "type": "integer" }, "error": { "type": "integer" } }
+    },
+    "envelope_discriminator": { "type": "string" },
+    "hooks": { "type": "boolean", "description": "true when the host has a hook surface and therefore capabilities.yaml, hooks/ schemas, and a codec" }
+  },
+  "if": {
+    "properties": { "hooks": { "const": true } },
+    "required": ["hooks"]
+  },
+  "then": {
+    "required": ["envelope_discriminator", "hook_config_paths"]
+  }
+}

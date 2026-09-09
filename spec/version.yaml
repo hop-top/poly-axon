@@ -1,0 +1,3 @@
+# spec/version.yaml — version of the spec tree, independent of the Go module version.
+# Bump on any change to events.yaml or any *.schema.json. See README.md.
+version: 0.3.0

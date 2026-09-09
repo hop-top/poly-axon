@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "axon invocation mapping",
+  "type": "object",
+  "required": ["host", "mappings"],
+  "additionalProperties": false,
+  "properties": {
+    "host": { "type": "string" },
+    "mappings": { "type": "array", "items": { "$ref": "#/definitions/option_mapping" } },
+    "tools": { "type": "array", "items": { "$ref": "#/definitions/tool_capability" } }
+  },
+  "definitions": {
+    "option_mapping": {
+      "type": "object",
+      "required": ["universal", "support"],
+      "additionalProperties": false,
+      "properties": {
+        "universal": { "type": "string" },
+        "support": { "type": "string", "enum": ["native", "shim", "unsupported", "dangerous"] },
+        "native": { "type": ["array", "null"], "items": { "type": "string" } },
+        "notes": { "type": "string" }
+      }
+    },
+    "tool_capability": {
+      "type": "object",
+      "required": ["universal", "support", "permission", "transcript", "controllable"],
+      "additionalProperties": false,
+      "properties": {
+        "universal": { "type": "string", "description": "cross-CLI tool name, e.g. shell.exec, file.read" },
+        "native_names": { "type": ["array", "null"], "items": { "type": "string" }, "description": "per-CLI labels the transcript actually uses" },
+        "support": { "type": "string", "enum": ["native", "shim", "unsupported", "dangerous"] },
+        "permission": { "type": "string", "enum": ["read", "write", "exec", "network", "browser", "task"] },
+        "transcript": { "type": "string", "enum": ["native", "partial", "unavailable"] },
+        "controllable": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

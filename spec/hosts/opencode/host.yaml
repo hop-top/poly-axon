@@ -1,0 +1,10 @@
+# spec/hosts/opencode/host.yaml
+name: opencode
+status: active
+binaries: [opencode]
+store_roots:
+  data: ~/.local/share/opencode/
+hook_config_paths: ["opencode.json", ".opencode/plugins/nerv-bridge.ts"]
+envelope_discriminator: type
+# No exit-code contract: OpenCode hooks are in-process JS callbacks that throw to block (nerv docs/research/opencode.md:14); decisions travel as JSON only.
+hooks: true

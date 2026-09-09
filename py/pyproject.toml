@@ -1,0 +1,56 @@
+[project]
+name = "hop-top-axon"
+version = "0.0.0"
+description = "Host-CLI contract for AI-assistant hooks"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+keywords = [
+  "ai",
+  "agent",
+  "cli",
+  "hooks",
+  "claude-code",
+  "gemini-cli",
+  "codex",
+  "opencode",
+  "json-schema",
+]
+authors = [
+  { name = "Idea Crafters LLC", email = "lab@ideacrafters.com" },
+]
+dependencies = [
+  "jsonschema>=4.23.0",
+  "PyYAML>=6.0.2",
+]
+
+[project.urls]
+Homepage = "https://hop.top/axon"
+Repository = "https://github.com/hop-top/poly-axon"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[build-system]
+requires = ["hatchling>=1.21.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/axon"]
+
+# The spec/ tree axon itself defines lives at the repo root (../spec
+# relative to this file), not inside src/axon/ -- it is shared with the
+# Go module and the ts/ binding, not owned by py/. hatchling's
+# force-include lets the wheel carry an out-of-tree directory at a
+# package-relative path without a separate copy-then-build step (unlike
+# ts/, which copies spec/ into dist/ via a pnpm prebuild script because
+# tsc has no equivalent of force-include). The installed wheel therefore
+# has axon/spec/ sitting right next to axon/_spec.py, matching what
+# _spec.py's path resolution expects at runtime -- see that module's
+# docstring for the exact resolution rule and its repo-root dev fallback.
+[tool.hatch.build.targets.wheel.force-include]
+"../spec" = "axon/spec"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

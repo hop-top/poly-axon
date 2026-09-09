@@ -1,0 +1,6 @@
+# spec/hosts/tabnine/host.yaml
+name: tabnine
+status: active
+binaries: [tabnine]
+store_roots:
+  data: ~/.tabnine/

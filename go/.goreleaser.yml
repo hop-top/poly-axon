@@ -1,0 +1,32 @@
+version: 2
+
+builds:
+  - binary: "axon"
+    main: ./cmd/axon
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - >-
+        -s -w
+        -X hop.top/axon/internal/version.ver={{ .Version }}
+        -X hop.top/axon/internal/version.commit={{ .Commit }}
+        -X hop.top/axon/internal/version.date={{ .Date }}
+
+archives:
+  - format: tar.gz
+    name_template: >-
+      axon_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"

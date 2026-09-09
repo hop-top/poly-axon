@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "gemini Stop input",
+  "description": "Gemini has no dedicated Stop hook: capabilities.yaml maps canonical Stop onto host event SessionEnd as a close row (\"only fires on graceful exit\"), the same host event canonical SessionEnd maps to natively. Both canonical events therefore share one wire shape, so this schema is SessionEnd.input.schema.json's shape under the canonical name the schema lookup uses. hook_event_name is pinned to the host-side name SessionEnd, not to Stop.",
+  "type": "object",
+  "required": ["hook_event_name", "session_id", "cwd"],
+  "additionalProperties": false,
+  "properties": {
+    "hook_event_name": { "const": "SessionEnd" },
+    "session_id": { "type": "string" },
+    "cwd": { "type": "string" },
+    "transcript_path": { "type": "string" },
+    "reason": { "type": "string" }
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "action": "warn",
+  "message": "this command touches a sensitive path"
+}

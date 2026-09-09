@@ -1,0 +1,6 @@
+# spec/hosts/kimi/host.yaml
+name: kimi
+status: active
+binaries: [kimi]
+store_roots:
+  data: ~/.kimi/sessions/

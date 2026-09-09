@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "opencode FileChanged input",
+  "type": "object",
+  "required": ["type", "session_id", "path"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "file.edited" },
+    "session_id": { "type": "string" },
+    "path": { "type": "string" }
+  }
+}
